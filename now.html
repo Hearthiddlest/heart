@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Right Now — Hearthiddlest</title>
+<meta name="description" content="My TBR jar, favourite characters, upcoming releases I'm counting down for, and the ARC teams I'm on." />
+
+<!-- favicon -->
+<link rel="icon" href="favicon.ico?v=5" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=5" />
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=5" />
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png?v=5" />
+<link rel="apple-touch-icon" href="images/favicon-180.png?v=5" />
+
+<!-- fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=ranade@300,400,500,700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a class="nav__brand" href="index.html">
+    <img src="images/avatar.png" alt="Hearthiddlest logo" />
+    <b>Hearthiddlest</b>
+  </a>
+  <div class="nav__links">
+    <a href="now.html" class="is-here">Right Now</a>
+    <a href="index.html#favorites">Favorites</a>
+    <a href="index.html#genres">Genres</a>
+    <a href="index.html#recs">Recs</a>
+    <a href="index.html#stagram">Bookstagrammers</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="pagehead" id="top">
+  <div class="pagehead__silk" id="silk"></div>
+  <div class="pagehead__veil"></div>
+  <div class="wrap pagehead__inner">
+    <a class="pagehead__back" href="index.html">&larr; Back to the shelf</a>
+    <h1>What's on my shelf <em>right now</em>.</h1>
+  </div>
+</header>
+
+<section class="band" id="now">
+  <div class="wrap tbr">
+    <div class="tbr__intro reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">To be read</span><span class="ln"></span></div>
+      <h2>My <em>TBR</em> jar.</h2>
+      <p>Every book I've promised myself I'll get to eventually. Tap the jar to see the whole
+         list.</p>
+    </div>
+    <div class="tbr__jar reveal">
+<a class="jar" id="tbrJar" href="https://www.goodreads.com/review/list/135875347?shelf=to-read"
+           target="_blank" rel="noreferrer noopener" aria-label="Open my Want to Read shelf on Goodreads">
+          <svg class="jar__svg" viewBox="0 0 120 150" aria-hidden="true">
+            <defs>
+              <clipPath id="jarClip"><path d="M22 44 h76 a8 8 0 0 1 8 8 v76 a12 12 0 0 1 -12 12 h-68 a12 12 0 0 1 -12 -12 v-76 a8 8 0 0 1 8 -8 z"/></clipPath>
+              <linearGradient id="glassG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"  stop-color="#ffffff" stop-opacity=".55"/>
+                <stop offset="45%" stop-color="#ffffff" stop-opacity=".10"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity=".30"/>
+              </linearGradient>
+            </defs>
+            <!-- lid -->
+            <rect class="jar__lid" x="26" y="22" width="68" height="18" rx="6"/>
+            <rect class="jar__lid2" x="32" y="14" width="56" height="12" rx="5"/>
+            <!-- tiny books inside -->
+            <g clip-path="url(#jarClip)" class="jar__books">
+              <g class="bk" style="--d:0s"><rect x="34" y="112" width="34" height="9"  rx="2" fill="#12224f"/></g>
+              <g class="bk" style="--d:.15s"><rect x="52" y="102" width="38" height="9" rx="2" fill="#2e5ce0" transform="rotate(-7 71 106)"/></g>
+              <g class="bk" style="--d:.3s"><rect x="30" y="96"  width="30" height="8"  rx="2" fill="#7f94c4" transform="rotate(6 45 100)"/></g>
+              <g class="bk" style="--d:.45s"><rect x="46" y="86" width="40" height="9"  rx="2" fill="#14151c" transform="rotate(-4 66 90)"/></g>
+              <g class="bk" style="--d:.6s"><rect x="34" y="76"  width="32" height="8"  rx="2" fill="#97a6bd" transform="rotate(8 50 80)"/></g>
+              <g class="bk" style="--d:.75s"><rect x="56" y="68" width="30" height="8"  rx="2" fill="#33384a" transform="rotate(-9 71 72)"/></g>
+              <g class="bk" style="--d:.9s"><rect x="40" y="60"  width="34" height="8"  rx="2" fill="#2e5ce0" transform="rotate(3 57 64)"/></g>
+            </g>
+            <!-- glass body over the books -->
+            <path class="jar__glass" d="M22 44 h76 a8 8 0 0 1 8 8 v76 a12 12 0 0 1 -12 12 h-68 a12 12 0 0 1 -12 -12 v-76 a8 8 0 0 1 8 -8 z" fill="url(#glassG)"/>
+            <path class="jar__shine" d="M32 52 q6 -4 12 0 v72 q-6 4 -12 0 z"/>
+          </svg>
+          <span class="jar__label">TBR jar</span>
+          <span class="jar__sub">Open my Want to Read ↗</span>
+        </a>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- TOP 5 CHARACTERS -->
+<section class="band band--tint" id="chars">
+  <div class="wrap chars">
+    <div class="chars__intro reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">Ruined me forever</span><span class="ln"></span></div>
+      <h2>My top five <em>characters</em>.</h2>
+      <p>The ones I'd follow into a burning building.</p>
+    </div>
+
+    <div class="chars__stack" id="charStack" aria-label="Favourite characters">
+      <article class="card">
+        <div class="card__text">
+          <span class="card__rank">01</span>
+          <h3 class="card__name">Salvatore Ajello</h3>
+          <p class="card__from">from <em>Stolen Touches</em> &middot; Neva Altaj</p>
+          <blockquote class="card__quote">I'm not jealous.&rdquo; I take a sip of coffee. &ldquo;I just have an uncontrollable urge to kill any man who even looks at my wife.</blockquote>
+        </div>
+        <div class="card__art">
+          <img src="images/characters/01.jpg" alt="Salvatore Ajello" loading="lazy" />
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__text">
+          <span class="card__rank">02</span>
+          <h3 class="card__name">Aaron Warne</h3>
+          <p class="card__from">from <em>Shatter Me series</em> &middot; Tahereh Mafi</p>
+          <blockquote class="card__quote">&ldquo;I grieve nothing. I take everything&rdquo;</blockquote>
+        </div>
+        <div class="card__art">
+          <img src="images/characters/02.jpg" alt="Aaron Warne" loading="lazy" />
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__text">
+          <span class="card__rank">03</span>
+          <h3 class="card__name">loki Laufeyson</h3>
+          <p class="card__from">from <em>Loki TV series</em> &middot; Marvel</p>
+          <blockquote class="card__quote">&ldquo;You were made to be ruled. In the end, you will always kneel.&rdquo;</blockquote>
+        </div>
+        <div class="card__art">
+          <img src="images/characters/03.jpg" alt="loki Laufeyson" loading="lazy" />
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__text">
+          <span class="card__rank">04</span>
+          <h3 class="card__name">Lana Myers</h3>
+          <p class="card__from">from <em>Mindfu*k series</em> &middot; S.T. Abby</p>
+          <blockquote class="card__quote">&ldquo;I'm so much worse and better than you. I'm the thing the monsters in the dark fear.&rdquo;</blockquote>
+        </div>
+        <div class="card__art">
+          <img src="images/characters/04.jpg" alt="Lana Myers" loading="lazy" />
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__text">
+          <span class="card__rank">05</span>
+          <h3 class="card__name">Sibby Dubois</h3>
+          <p class="card__from">from <em>Satan's Affair</em> &middot; H.D. Carlton</p>
+          <blockquote class="card__quote">&ldquo;I'm not crazy! I'm just passionate.&rdquo;</blockquote>
+        </div>
+        <div class="card__art">
+          <img src="images/characters/05.jpg" alt="Sibby Dubois" loading="lazy" />
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- KINDLE HIGHLIGHTS -->
+<section class="band" id="highlights">
+  <div class="wrap kh">
+    <div class="kh__intro reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">Lines I kept</span><span class="ln"></span></div>
+      <h2>Straight from my <em>Kindle</em>.</h2>
+      <p>The sentences I stopped and highlighted mid-read. A different one every time you land
+         here &mdash; tap the screen for another.</p>
+    </div>
+
+    <div class="kh__stage reveal">
+      <div class="kndl" id="kndl" role="group" aria-label="Kindle highlight, tap for another">
+        <div class="kndl__screen">
+          <div class="kndl__page" id="kndlPage"></div>
+        </div>
+        <span class="kndl__name" id="kndlName"></span>
+      </div>
+
+      <div class="kh__ctrls" id="kndlCtrls">
+        <span class="kh__cite" id="kndlCite"></span>
+        <div class="kh__dots" id="kndlDots"></div>
+        <button class="kh__shuffle" id="kndlShuffle" type="button">Shuffle &#8635;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band--tint" id="excited">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">Counting down</span><span class="ln"></span></div>
+      <h2 style="font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,4.8vw,3.5rem);line-height:1.02;color:var(--blue-deep)">Books I'm excited for</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="rail reveal" id="rail"></div>
+  </div>
+</section>
+
+<section class="band" id="teams">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">Teams I'm on</span><span class="ln"></span></div>
+      <h2>ARC teams <em>I'm on</em>.</h2>
+    </div>
+    <div class="teams reveal" id="teamsRow"></div>
+  </div>
+</section>
+
+<!-- AUTHORS I'D LOVE TO MEET -->
+<section class="band band--tint" id="authors">
+  <div class="wrap">
+    <div class="sec-head sec-head--tight reveal">
+      <div class="chapter-mark"><span class="rn">&#8226;</span><span class="foil">One day, hopefully</span><span class="ln"></span></div>
+      <h2>Authors I'd love to <em>meet/interview</em>.</h2>
+      <p> I'd completely lose my words in front of btw</p>
+    </div>
+    <div class="chroma reveal" id="chroma"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__mark"><img src="images/avatar.png" alt=""/><b>Hearthiddlest</b></div>
+      </div>
+      <div class="footer__col">
+        <h4>Read</h4>
+        <a href="index.html#favorites">Favorites</a>
+        <a href="index.html#genres">Genres</a>
+        <a href="index.html#recs">Recommendations</a>
+        <a href="index.html#stagram">Bookstagrammers</a>
+      </div>
+      <div class="footer__col">
+        <h4>Right now</h4>
+        <a href="#now">TBR jar</a>
+        <a href="#chars">Top 5 characters</a>
+        <a href="#highlights">Kindle highlights</a>
+        <a href="#excited">Excited for</a>
+        <a href="#teams">ARC teams</a>
+        <a href="#authors">Authors to meet</a>
+      </div>
+      <div class="footer__col">
+        <h4>Find me</h4>
+        <a href="https://instagram.com/hearthiddlest" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.goodreads.com/user/show/135875347-mary" target="_blank" rel="noreferrer">Goodreads</a>
+        <a href="https://ko-fi.com/heart101" target="_blank" rel="noreferrer">Ko-fi</a>
+        <a href="mailto:hearthiddleston@gmail.com">Email</a>
+      </div>
+      <div class="footer__col">
+        <h4>Also me</h4>
+        <a href="https://instagram.com/mafia.romance.enthusiast" target="_blank" rel="noreferrer">want more mafia? @mafia.romance.enthusiast</a>
+        <a href="https://ko-fi.com/heart101" target="_blank" rel="noreferrer">Grid design</a>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>&copy; Hearthiddlest 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
