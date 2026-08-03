@@ -7,6 +7,12 @@
       "img": "fav-books/04.jpg"
     },
     {
+      "t": "Enzo",
+      "a": "Eva Winners",
+      "tag": "Mafia",
+      "img": "fav-books/05.jpg"
+    },
+    {
       "t": "Beautiful Beast",
       "a": "Neva Altaj",
       "tag": "Mafia",
@@ -19,16 +25,16 @@
       "img": "fav-books/02.jpg"
     },
     {
-      "t": "Precious Hazard",
-      "a": "Neva Altaj",
-      "tag": "Mafia",
-      "img": "fav-books/03.jpg"
+      "t": "Mindf*ck",
+      "a": "S.T. Abby",
+      "tag": "Dark",
+      "img": "fav-books/11.jpg"
     },
     {
-      "t": "Enzo",
-      "a": "Eva Winners",
-      "tag": "Mafia",
-      "img": "fav-books/05.jpg"
+      "t": "Lights Out",
+      "a": "Navessa Allen",
+      "tag": "Stalker",
+      "img": "fav-books/09.jpg"
     },
     {
       "t": "The Maddest Obsession",
@@ -49,22 +55,16 @@
       "img": "fav-books/08.jpg"
     },
     {
-      "t": "Lights Out",
-      "a": "Navessa Allen",
-      "tag": "Stalker",
-      "img": "fav-books/09.jpg"
+      "t": "Precious Hazard",
+      "a": "Neva Altaj",
+      "tag": "Mafia",
+      "img": "fav-books/03.jpg"
     },
     {
       "t": "Satan's Affair",
       "a": "H.D. Carlton",
       "tag": "Dark horror",
       "img": "fav-books/10.jpg"
-    },
-    {
-      "t": "Mindf*ck",
-      "a": "S.T. Abby",
-      "tag": "Dark",
-      "img": "fav-books/11.jpg"
     },
     {
       "t": "Ignite Me",
@@ -170,8 +170,8 @@
   "bookOfMonth": {
     "title": "Thorns of Silence",
     "author": "Eva Winners",
-    "cover": "https://res.cloudinary.com/txejsma8/image/upload/f_auto,q_auto/v1785746664/hearthiddlest/thtanx82kulwyqlwtqqy.jpg",
-    "photo": "",
+    "cover": "https://res.cloudinary.com/txejsma8/image/upload/f_auto,q_auto/v1785787666/hearthiddlest/zwuue5qco2gye9om0edi.jpg",
+    "photo": "https://res.cloudinary.com/txejsma8/image/upload/f_auto,q_auto/v1785787681/hearthiddlest/qwcnckuthjqu054sie5m.jpg",
     "back": "",
     "color": "#12224f",
     "highlightColor": "#ff5c5c",
