@@ -271,7 +271,7 @@ function buildBotmScene(b, title, author, cover, grLink){
     <div class="botm-note" style="--tilt:4deg">
       <div class="botm-note__eyebrow">Quotes I keep re-reading</div>
       ${qHTML || '<p class="botm-note__line" style="opacity:.5">Add quotes in the admin panel.</p>'}
-      <p class="botm-note__hand">yes I&rsquo;ve read it &mdash;<br/>no I&rsquo;m not over it</p>
+      <p class="botm-note__hand">giggling</p>
       <div class="botm-note__page">ii</div>
       <div class="botm-note__marks" aria-hidden="true">${bookmarksHTML}</div>
     </div>`;
