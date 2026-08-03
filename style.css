@@ -1096,68 +1096,44 @@ body{ overflow-x:clip; }
 .challenge__over{ font-family:var(--f-label); font-weight:700; font-size:.62rem;
   letter-spacing:.04em; color:var(--blue); white-space:nowrap; }
 
+
 /* ============================================================
    BOOK OF THE MONTH — the shelf scene
-   Stack order (back → front, per Heart's spec):
-     glass card (.botm-card, base)
-     soft aurora (.botm-bg, top band behind the h2)
-     "book of the month" (.botm-title)
-     author / book name / review link (.botm-meta)
-     quote page (.botm-note)
-     polaroid photo (.botm-polaroid)
-     framed book (.botm-book)
-     side rays (.botm-rays, overlays everything)
+   Structure per Heart's spec:
+     <section class="section section--botm" id="bookOfMonth-section">
+       .section__head  →  aurora sits here, behind the h2
+         h2  →  "Book of the Month"
+       .rail#bookOfMonth  →  bookCard() appends the scene here
+         .botm-scene
+           .botm-shelf, .botm-sparkles
+           .botm-polaroid  (left, paperclip-pinned photo)
+           .botm-book  (center, .bcard-style cover, no frame, no base)
+           .botm-note  (right, marked-up quote page)
+       .botm-rays  →  spotlight, injected by JS, sits above everything
+   No glass card wrapper — each item carries its own shadow.
    ============================================================ */
 
-/* --- section shell: sits on the site's paper palette --- */
-.band--botm{
+/* --- section shell --- */
+.section--botm{
   position:relative; z-index:3;
-  padding: 5rem 0 4rem;
+  padding: 4.5rem 0 4rem;
   background:linear-gradient(180deg, var(--paper), var(--paper-2));
   overflow:hidden;
   isolation:isolate;
+  border-block:1px solid var(--line-soft);
 }
-.band--botm .wrap{ position:relative; z-index:2; }
 
-/* --- the glass card is the BASE layer (bottommost visible thing) --- */
-.botm-card{
+/* --- section__head hosts the h2 and, behind it, the aurora --- */
+.section--botm .section__head{
   position:relative;
-  padding: clamp(2rem, 4vw, 3.4rem) clamp(1.5rem, 4vw, 3.4rem) clamp(2rem, 4vw, 3rem);
-  border-radius:22px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.85), rgba(240,246,255,.72));
-  border:1px solid rgba(255,255,255,.9);
-  box-shadow:
-    0 40px 80px -30px rgba(46, 92, 224, .25),
-    0 14px 30px -14px rgba(18, 34, 79, .12),
-    inset 0 1px 0 rgba(255,255,255,.8);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  overflow:hidden;
-  isolation:isolate;
+  width: min(1180px, 92vw);
+  margin: 0 auto 2.4rem;
+  padding: .5rem 1.2rem 0;
+  z-index: 2;
 }
-
-/* --- soft aurora: sits INSIDE the card, behind the h2 only ---
-   A horizontal band at the top of the card, fading out downward,
-   so the aurora reads as glow behind "book of the month". */
-.botm-bg{
-  position:absolute;
-  left:0; right:0; top:0;
-  height: 55%;
-  z-index: 1;
-  pointer-events:none;
-  opacity: .95;
-  border-radius: 22px 22px 0 0;
-  overflow:hidden;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 100%);
-          mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 100%);
-}
-.botm-bg canvas{ width:100%!important; height:100%!important; display:block; }
-
-/* --- title: Playfair Display, matching every other h2 on the site --- */
-.botm-title{
+.section--botm .section__head h2{
   position:relative; z-index: 2;
-  text-align:center;
+  text-align:left;
   font-family: var(--f-display);
   font-weight: 700;
   font-style: italic;
@@ -1165,68 +1141,40 @@ body{ overflow-x:clip; }
   line-height: 1.04;
   letter-spacing:-.015em;
   color: var(--blue-deep);
-  margin: 0 0 .8rem;
+  margin: 0;
   text-transform: lowercase;
 }
 
-/* --- upper-left staggered meta block --- */
-.botm-meta{
-  position:relative; z-index: 3;
-  display:inline-block;
-  margin: .5rem 0 2rem 1.2rem;
-  padding-left: .2rem;
-}
-.botm-meta__author{
-  font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1rem;
-  color: var(--ink-soft);
-}
-.botm-meta__title{
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
-  color: var(--blue-deep);
-  line-height: 1.1;
-  margin: .1rem 0 .1rem 1.6rem;
-}
-.botm-meta__link{
-  display:inline-block;
-  font-family: var(--f-label);
-  font-weight: 500;
-  font-size: .58rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--blue);
-  margin-left: 3.2rem;
-  padding-bottom: 2px;
-  border-bottom: 1px solid rgba(46, 92, 224, .4);
-  transition: color .2s, transform .2s, border-color .2s;
-}
-.botm-meta__link:not(.botm-meta__link--muted):hover{
-  color: var(--blue-deep);
-  border-color: var(--blue-deep);
-  transform: translateX(2px);
-}
-.botm-meta__link--muted{ opacity:.55; cursor:default; border-color: rgba(46,92,224,.15); }
+/* (aurora removed per Heart's request) */
 
 /* ============================================================
-   The scene — polaroid | book | note, all resting on a shelf
+   The rail becomes the scene container for BOTM.
+   ID selector overrides .rail's flex+overflow-x behavior.
+   ============================================================ */
+#bookOfMonth{
+  display:block;
+  overflow:visible;
+  padding: 0;
+  margin: 0;
+  scroll-snap-type: none;
+}
+
+/* ============================================================
+   The scene — polaroid | book | quote page, all on a shelf
    ============================================================ */
 .botm-scene{
   position:relative; z-index: 4;
-  display:grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: 1fr;
-  align-items:end;
-  justify-items:center;
+  width: min(1180px, 92vw);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   gap: clamp(1rem, 3vw, 3rem);
   min-height: 480px;
   padding: 0 clamp(.5rem, 3vw, 2rem) 90px;
 }
 
-/* --- the white shelf (a picture ledge) — sits behind the items on it --- */
+/* --- the white shelf (a picture ledge) --- */
 .botm-shelf{
   position:absolute; left:2%; right:2%; bottom:30px;
   height: 60px;
@@ -1242,15 +1190,10 @@ body{ overflow-x:clip; }
 }
 .botm-shelf__front{
   position:absolute; left:0; right:0; top:8px; bottom:0;
-  background:
-    linear-gradient(180deg,
-      #eaf0fb 0%,
-      #dae4f6 40%,
-      #c7d5ee 100%);
+  background: linear-gradient(180deg, #eaf0fb 0%, #dae4f6 40%, #c7d5ee 100%);
   border-radius: 0 0 6px 6px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.55),
-    0 20px 40px -10px rgba(70, 110, 180, .18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55),
+              0 20px 40px -10px rgba(70, 110, 180, .18);
 }
 .botm-shelf__front::after{
   content:''; position:absolute; left:8%; right:8%; top:0; height:1px;
@@ -1258,14 +1201,11 @@ body{ overflow-x:clip; }
 }
 
 /* ============================================================
-   Scene z-order per Heart's spec: book > photo > quotes > sparkles > shelf
+   QUOTE PAGE — z-index 3
    ============================================================ */
-
-/* --- QUOTE PAGE — z-index 3 (behind photo & book) --- */
 .botm-note{
   position:relative; z-index: 3;
-  grid-column: 3;
-  justify-self: start;
+  align-self: flex-end;
   width: clamp(240px, 26vw, 340px);
   min-height: 300px;
   padding: 1.6rem 1.4rem 2.4rem;
@@ -1310,7 +1250,7 @@ body{ overflow-x:clip; }
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
   padding: 0 2px;
 }
-.botm-card.in .botm-note__hl{ background-size: 100% 100%; }
+.botm-scene.in .botm-note__hl{ background-size: 100% 100%; }
 .botm-note__line:nth-of-type(1) .botm-note__hl{ transition-delay:.15s; }
 .botm-note__line:nth-of-type(2) .botm-note__hl{ transition-delay:.45s; }
 .botm-note__line:nth-of-type(3) .botm-note__hl{ transition-delay:.75s; }
@@ -1318,8 +1258,7 @@ body{ overflow-x:clip; }
 .botm-note__hand{
   margin-top: 1.4rem;
   font-family: var(--f-hand);
-  font-size: 1.05rem;
-  line-height: 1.15;
+  font-size: 1.05rem; line-height: 1.15;
   color: var(--pen, #3d63c4);
   transform: rotate(-2deg);
 }
@@ -1351,16 +1290,17 @@ body{ overflow-x:clip; }
   border-right: 6px solid transparent;
   filter: brightness(.85);
 }
-.botm-card.in .botm-note__mark{ transform: translateX(8px); }
+.botm-scene.in .botm-note__mark{ transform: translateX(8px); }
 
-/* --- POLAROID — z-index 4 (over the quote page) --- */
+/* ============================================================
+   POLAROID — z-index 4
+   ============================================================ */
 .botm-polaroid{
   position:relative; z-index: 4;
+  align-self: flex-end;
   width: clamp(160px, 20vw, 220px);
   transform: rotate(var(--tilt, -6deg)) translateY(-30px);
   transition: transform .4s cubic-bezier(.2,.7,.2,1);
-  grid-column: 1;
-  justify-self: end;
   margin-right: -20px;
 }
 .botm-polaroid:hover{ transform: rotate(0deg) translateY(-40px); }
@@ -1401,41 +1341,46 @@ body{ overflow-x:clip; }
   transform: rotate(-14deg);
 }
 
-/* --- THE BOOK — z-index 5 (topmost on the shelf) --- */
+/* ============================================================
+   THE BOOK — z-index 5 (topmost on the shelf)
+   Uses .bcard cover styling (spine + glare + tag + goodreads label)
+   at a bigger size for BOTM. No frame, no wooden base.
+   ============================================================ */
 .botm-book{
   position:relative; z-index: 5;
-  grid-column: 2;
+  align-self: flex-end;
   display:flex; flex-direction:column; align-items:center;
   transform: translateY(-30px);
+  width: clamp(180px, 22vw, 240px);
 }
-.botm-book__frame{
+/* The cover reuses the same treatment as .bcard__cover:
+   dark base, spine detail, glare gradient, tag badge, hover Goodreads tag. */
+.botm-book__cover{
   position:relative;
-  padding: 14px 14px 6px;
-  background: linear-gradient(180deg, #faf6ee, #f0e8d8);
-  border: 1px solid #d9cfba;
-  border-radius: 2px;
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: 3px 7px 7px 3px;
+  overflow: hidden;
+  background: #0a1226;
   box-shadow:
-    0 30px 60px -20px rgba(18,34,79,.35),
-    0 8px 20px rgba(18,34,79,.15),
-    inset 0 0 0 3px #fff,
-    inset 0 0 0 4px #e6ddc7;
+    0 40px 60px -20px rgba(18,34,79,.45),
+    0 12px 24px rgba(18,34,79,.22);
   transition: transform .4s cubic-bezier(.2,.7,.2,1);
 }
-.botm-book:hover .botm-book__frame{ transform: translateY(-6px); }
-.botm-book__inner{
-  width: clamp(170px, 20vw, 220px);
-  aspect-ratio: 2/3;
-  background:#0a1226;
-  border-radius:1px;
-  overflow:hidden;
-  position:relative;
-  box-shadow: inset 0 0 24px rgba(0,0,0,.15);
+.botm-book:hover .botm-book__cover{ transform: translateY(-8px); }
+.botm-book__cover img{
+  width:100%; height:100%; object-fit:cover;
+  display:block; pointer-events:none;
 }
-.botm-book__inner img{ width:100%; height:100%; object-fit:cover; display:block; }
-.botm-book__inner::after{
-  content:''; position:absolute; inset:0;
-  background: linear-gradient(115deg, rgba(255,255,255,.15) 0%, transparent 40%);
-  pointer-events:none;
+/* spine line */
+.botm-book__cover::before{
+  content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; z-index:2;
+  background: rgba(0,0,0,.28);
+}
+/* glare */
+.botm-book__cover::after{
+  content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
+  background: linear-gradient(120deg, rgba(255,255,255,.14), transparent 45%);
 }
 .botm-book__gen{
   width:100%; height:100%;
@@ -1443,44 +1388,81 @@ body{ overflow-x:clip; }
   font: 700 20px/1.3 var(--f-display);
   color:#faf7f2; text-align:center; padding: 20px;
 }
-.botm-book__base{
-  height: 10px;
-  margin: 4px auto 0;
-  width: 82%;
-  background: linear-gradient(180deg, #d9cfba, #a89870);
-  border-radius: 2px 2px 6px 6px;
-  box-shadow: 0 6px 12px -4px rgba(80,60,20,.35);
+/* Small "Book of the Month" tag badge, top-left of cover (matches .bcard__tag) */
+.botm-book__tag{
+  position:absolute; top:.7rem; left:.7rem; z-index: 3;
+  font-family: var(--f-label);
+  font-weight: 700; font-size: .5rem;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--blue-deep);
+  background: rgba(255,255,255,.92);
+  padding: .3rem .5rem;
+  border-radius: 100px;
+}
+/* Goodreads label, bottom-right of cover, revealed on hover (matches .bcard__gr) */
+.botm-book__gr{
+  position:absolute; bottom:.6rem; right:.6rem; z-index: 3;
+  font-family: var(--f-label);
+  font-weight: 700; font-size: .46rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: #fff;
+  background: rgba(10,18,38,.85);
+  padding: .3rem .5rem;
+  border-radius: 100px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .25s, transform .25s;
+}
+.botm-book:hover .botm-book__gr{ opacity: 1; transform: none; }
+
+/* Meta (title + author) sits UNDER the cover — matches .bcard__meta */
+.botm-book__meta{
+  margin-top: .9rem;
+  text-align:center;
+  max-width: 240px;
+}
+.botm-book__ttl{
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.12;
+  color: var(--blue-deep);
+}
+.botm-book__au{
+  font-style: italic;
+  opacity: .9;
+  margin-top: .15rem;
+  font-size: .9rem;
+  color: var(--ink-soft);
 }
 .botm-book__link{
-  margin-top: 14px;
-  font: 500 .62rem var(--f-label);
-  letter-spacing:.14em; text-transform:uppercase;
-  color: var(--blue); text-decoration:none;
-  padding: .3rem .7rem;
-  border: 1px solid rgba(46,92,224,.25);
-  border-radius: 100px;
-  background: rgba(255,255,255,.6);
-  transition: background .2s, color .2s;
+  display: inline-block;
+  margin-top: .7rem;
+  font: 500 .58rem var(--f-label);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--blue);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(46, 92, 224, .4);
+  transition: color .2s, border-color .2s;
 }
-.botm-book__link:hover{ background: var(--blue); color:#fff; }
+.botm-book__link:hover{ color: var(--blue-deep); border-color: var(--blue-deep); }
 
 /* ============================================================
-   RAYS — sit ON TOP of everything (Heart's #1 layer)
-   Kept as mix-blend-mode: screen so they read as light shafts,
-   not as opaque colored streaks blocking the scene.
+   RAYS — sit ABOVE everything (Heart's #1 layer)
+   Injected at the section level so they cover the whole thing.
    ============================================================ */
 .botm-rays{
   position:absolute; inset:0;
   z-index: 20;
   pointer-events:none;
-  border-radius: 22px;
   overflow:hidden;
   mix-blend-mode: screen;
 }
 .botm-rays canvas{ width:100%!important; height:100%!important; display:block; }
 
 /* ============================================================
-   SPARKLES — subtle decor, sit behind items but above shelf
+   SPARKLES — decorative, sit behind items but above shelf
    ============================================================ */
 .botm-sparkles{
   position:absolute; inset:0; pointer-events:none; z-index: 2;
@@ -1489,8 +1471,10 @@ body{ overflow-x:clip; }
   position:absolute;
   width:14px; height:14px;
   opacity:0;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.4) 25%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255,255,255,.95) 0%,
+    rgba(255,255,255,.4) 25%,
+    transparent 60%);
   animation: botm-twinkle 3.4s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * .28s);
 }
@@ -1525,29 +1509,22 @@ body{ overflow-x:clip; }
    ============================================================ */
 @media(max-width: 900px){
   .botm-scene{
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    flex-direction: column;
     gap: 1.8rem;
     padding-bottom: 70px;
   }
-  .botm-polaroid,
-  .botm-book,
-  .botm-note{
-    grid-column: 1;
-    justify-self: center;
+  .botm-polaroid, .botm-book, .botm-note{
+    align-self: center;
     margin: 0;
     transform: none;
   }
   .botm-polaroid{ transform: rotate(-6deg); }
   .botm-note{ transform: rotate(3deg); width: min(340px, 88%); }
   .botm-shelf{ bottom: 20px; }
-  .botm-meta{ margin-left: 0; text-align:left; }
-  .botm-meta__title{ margin-left: 1rem; }
-  .botm-meta__link{ margin-left: 2rem; }
+  .section--botm .section__head h2{ text-align: center; }
 }
 @media(max-width: 520px){
-  .botm-title{ font-size: 2rem; }
-  .botm-book__inner{ width: 150px; }
+  .section--botm .section__head h2{ font-size: 2rem; }
   .botm-shelf{ display:none; }
 }
 

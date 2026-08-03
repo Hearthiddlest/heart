@@ -162,23 +162,120 @@ function initSilk(mount, {
 }
 
 /* ============================================================
-   2) Book rails (favorites + excited) — cards link to Goodreads
+   2) Book rails (favorites + excited) — cards link to Goodreads.
+   Also handles the Book of the Month scene when badgeText is
+   "Book of the Month": returns the whole shelf scene element
+   (polaroid + book + quote page) instead of a plain rail card.
    ============================================================ */
 function bookCard(b, badgeText){
+  // Accept either data shape:
+  //   rail books: { t, a, img, gr, d }
+  //   BOTM:       { title, author, cover, link, photo, quotes, highlightColor }
+  const title  = b.title  || b.t  || '';
+  const author = b.author || b.a  || '';
+  const cover  = b.cover  || b.img || '';
+  const grLink = b.link   || b.gr || goodreads(title, author);
+
+  if (badgeText === 'Book of the Month') return buildBotmScene(b, title, author, cover, grLink);
+
   const a = el('a','bcard');
-  a.href = b.gr || goodreads(b.t, b.a);
+  a.href = grLink;
   a.target = '_blank'; a.rel = 'noreferrer noopener';
   a.innerHTML = `
     <div class="bcard__cover">
       <span class="bcard__tag">${badgeText}</span>
-      <img src="${b.img}" alt="${b.t} by ${b.a}" loading="lazy" />
-      <span class="bcard__gr">Goodreads ↗</span>
+      <img src="${cover}" alt="${title} by ${author}" loading="lazy" />
+      <span class="bcard__gr">Goodreads \u2197</span>
     </div>
     <div class="bcard__meta">
-      <div class="bcard__ttl">${b.t}</div>
-      <div class="bcard__au">${b.a}</div>
+      <div class="bcard__ttl">${title}</div>
+      <div class="bcard__au">${author}</div>
     </div>`;
   return a;
+}
+
+/* Builds the fancy BOTM shelf scene as a detached element.
+   Returned element is what bookCard() emits when the badge is
+   "Book of the Month" — polaroid on the left, .bcard-style cover
+   in the center, marked-up quote page on the right. */
+function buildBotmScene(b, title, author, cover, grLink){
+  const hlColor = b.highlightColor || '';
+  const hlStyleAttr = hlColor ? `style="--botm-hl:${hlColor}"` : '';
+  const quotes = (b.quotes || []).slice(0, 3);
+  const qHTML = quotes.map(q =>
+    `<p class="botm-note__line"><span class="botm-note__hl" ${hlStyleAttr}>${escapeHTML(q)}</span></p>`
+  ).join('');
+
+  const bookmarksHTML = ['#f9d2e0', '#bcd3f7', '#f3d6b0']
+    .map((c,i) => `<span class="botm-note__mark" style="--mk:${c}; --i:${i}"></span>`)
+    .join('');
+
+  const sparklesHTML = Array.from({length: 10}, (_,i) =>
+    `<span class="botm-spark" style="--i:${i}"></span>`
+  ).join('');
+
+  const clipSVG = `
+    <svg class="botm-polaroid__clip" viewBox="0 0 44 60" aria-hidden="true">
+      <defs>
+        <linearGradient id="botm-clipG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#e8ecf3"/>
+          <stop offset=".5" stop-color="#b6bfd0"/>
+          <stop offset="1" stop-color="#8b98ad"/>
+        </linearGradient>
+      </defs>
+      <path d="M14 4 Q22 4 22 12 L22 44 Q22 52 30 52 Q38 52 38 44 L38 16"
+            fill="none" stroke="url(#botm-clipG)" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M14 4 Q6 4 6 12 L6 46 Q6 56 16 56"
+            fill="none" stroke="url(#botm-clipG)" stroke-width="3.2" stroke-linecap="round"/>
+      <circle cx="14" cy="8" r="2.4" fill="#cdd6e3"/>
+    </svg>`;
+
+  const coverHTML = cover
+    ? `<img src="${cover}" alt="${escapeHTML(title)} by ${escapeHTML(author)}" loading="lazy" />`
+    : `<div class="botm-book__gen" style="background:${b.color||'#12224f'}"><span>${escapeHTML(title)}</span></div>`;
+
+  const photoHTML = b.photo
+    ? `<img src="${b.photo}" alt="${escapeHTML(title)} \u2014 photo" />`
+    : `<div class="botm-polaroid__placeholder"><span>add a photo<br/>in the admin panel</span></div>`;
+
+  const scene = el('div', 'botm-scene');
+  scene.innerHTML = `
+    <div class="botm-sparkles" aria-hidden="true">${sparklesHTML}</div>
+
+    <div class="botm-shelf" aria-hidden="true">
+      <div class="botm-shelf__top"></div>
+      <div class="botm-shelf__front"></div>
+    </div>
+
+    <div class="botm-polaroid" style="--tilt:-7deg">
+      ${clipSVG}
+      <div class="botm-polaroid__inner">
+        ${photoHTML}
+        <div class="botm-polaroid__caption">${escapeHTML(title)}</div>
+      </div>
+    </div>
+
+    <a class="botm-book" href="${grLink}" target="_blank" rel="noopener" aria-label="${escapeHTML(title)} on Goodreads">
+      <div class="botm-book__cover">
+        <span class="botm-book__tag">Book of the Month</span>
+        ${coverHTML}
+        <span class="botm-book__gr">Goodreads \u2197</span>
+      </div>
+      <div class="botm-book__meta">
+        <div class="botm-book__ttl">${escapeHTML(title)}</div>
+        <div class="botm-book__au">${escapeHTML(author)}</div>
+        <span class="botm-book__link">my review \u2192</span>
+      </div>
+    </a>
+
+    <div class="botm-note" style="--tilt:4deg">
+      <div class="botm-note__eyebrow">Quotes I keep re-reading</div>
+      ${qHTML || '<p class="botm-note__line" style="opacity:.5">Add quotes in the admin panel.</p>'}
+      <p class="botm-note__hand">yes I&rsquo;ve read it &mdash;<br/>no I&rsquo;m not over it</p>
+      <div class="botm-note__page">ii</div>
+      <div class="botm-note__marks" aria-hidden="true">${bookmarksHTML}</div>
+    </div>`;
+  return scene;
 }
 function renderRails(){
   const rail = $('#rail');
@@ -1250,157 +1347,6 @@ renderFavShelf();
 renderRecs();
 
 // ============================================================
-// SoftAurora — vanilla port of the React Bits component (ogl-based)
-// Mounts a full-container canvas that animates a soft aurora glow.
-// ============================================================
-function initSoftAurora(mount, {
-  speed = 0.55, scale = 1.6, brightness = 1.1,
-  color1 = '#f7f7f7', color2 = '#8ab4f8',
-  noiseFrequency = 2.4, noiseAmplitude = 1.0,
-  bandHeight = 0.42, bandSpread = 1.05, octaveDecay = 0.1,
-  layerOffset = 0, colorSpeed = 1.0,
-  enableMouse = true, mouseInfluence = 0.18,
-} = {}) {
-  if (!mount) return () => {};
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const hexVec3 = h => { h = h.replace('#',''); return [
-    parseInt(h.slice(0,2),16)/255,
-    parseInt(h.slice(2,4),16)/255,
-    parseInt(h.slice(4,6),16)/255 ]; };
-
-  const renderer = new Renderer({ alpha: true, premultipliedAlpha: false, dpr: Math.min(devicePixelRatio||1, 2) });
-  const gl = renderer.gl;
-  gl.clearColor(0, 0, 0, 0);
-  gl.canvas.style.width = '100%';
-  gl.canvas.style.height = '100%';
-  gl.canvas.style.display = 'block';
-  mount.appendChild(gl.canvas);
-
-  const vert = `
-    attribute vec2 uv; attribute vec2 position;
-    varying vec2 vUv;
-    void main(){ vUv = uv; gl_Position = vec4(position, 0.0, 1.0); }`;
-  const frag = `
-    precision highp float;
-    uniform float uTime; uniform vec3 uResolution;
-    uniform float uSpeed, uScale, uBrightness;
-    uniform vec3 uColor1, uColor2;
-    uniform float uNoiseFreq, uNoiseAmp, uBandHeight, uBandSpread, uOctaveDecay, uLayerOffset, uColorSpeed;
-    uniform vec2 uMouse; uniform float uMouseInfluence; uniform bool uEnableMouse;
-    #define TAU 6.28318
-    vec3 gradientHash(vec3 p){
-      p = vec3(dot(p,vec3(127.1,311.7,234.6)), dot(p,vec3(269.5,183.3,198.3)), dot(p,vec3(169.5,283.3,156.9)));
-      vec3 h = fract(sin(p) * 43758.5453123);
-      float phi = acos(2.0*h.x-1.0); float theta = TAU*h.y;
-      return vec3(cos(theta)*sin(phi), sin(theta)*cos(phi), cos(phi));
-    }
-    float quinticSmooth(float t){ float t2=t*t; float t3=t*t2; return 6.0*t3*t2 - 15.0*t2*t2 + 10.0*t3; }
-    vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d){ return a + b*cos(TAU*(c*t + d)); }
-    float perlin3D(float amp, float freq, float px, float py, float pz){
-      float x=px*freq, y=py*freq;
-      float fx=floor(x), fy=floor(y), fz=floor(pz);
-      float cx=ceil(x),  cy=ceil(y),  cz=ceil(pz);
-      vec3 g000=gradientHash(vec3(fx,fy,fz)); vec3 g100=gradientHash(vec3(cx,fy,fz));
-      vec3 g010=gradientHash(vec3(fx,cy,fz)); vec3 g110=gradientHash(vec3(cx,cy,fz));
-      vec3 g001=gradientHash(vec3(fx,fy,cz)); vec3 g101=gradientHash(vec3(cx,fy,cz));
-      vec3 g011=gradientHash(vec3(fx,cy,cz)); vec3 g111=gradientHash(vec3(cx,cy,cz));
-      float d000=dot(g000,vec3(x-fx,y-fy,pz-fz)); float d100=dot(g100,vec3(x-cx,y-fy,pz-fz));
-      float d010=dot(g010,vec3(x-fx,y-cy,pz-fz)); float d110=dot(g110,vec3(x-cx,y-cy,pz-fz));
-      float d001=dot(g001,vec3(x-fx,y-fy,pz-cz)); float d101=dot(g101,vec3(x-cx,y-fy,pz-cz));
-      float d011=dot(g011,vec3(x-fx,y-cy,pz-cz)); float d111=dot(g111,vec3(x-cx,y-cy,pz-cz));
-      float sx=quinticSmooth(x-fx), sy=quinticSmooth(y-fy), sz=quinticSmooth(pz-fz);
-      float lx00=mix(d000,d100,sx), lx10=mix(d010,d110,sx), lx01=mix(d001,d101,sx), lx11=mix(d011,d111,sx);
-      float ly0=mix(lx00,lx10,sy), ly1=mix(lx01,lx11,sy);
-      return amp * mix(ly0, ly1, sz);
-    }
-    float auroraGlow(float t, vec2 shift){
-      vec2 uv = gl_FragCoord.xy / uResolution.y; uv += shift;
-      float noiseVal = 0.0; float freq = uNoiseFreq; float amp = uNoiseAmp;
-      vec2 samplePos = uv * uScale;
-      for (float i=0.0; i<3.0; i+=1.0){
-        noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);
-        amp *= uOctaveDecay; freq *= 2.0;
-      }
-      float yBand = uv.y*10.0 - uBandHeight*10.0;
-      return 0.3 * max(exp(uBandSpread * (1.0 - 1.1*abs(noiseVal + yBand))), 0.0);
-    }
-    void main(){
-      vec2 uv = gl_FragCoord.xy / uResolution.xy;
-      float t = uSpeed * 0.4 * uTime;
-      vec2 shift = vec2(0.0);
-      if (uEnableMouse) shift = (uMouse - 0.5) * uMouseInfluence;
-      vec3 col = vec3(0.0);
-      col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime*uSpeed*0.2*uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3,0.20,0.20)) * uColor1;
-      col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime*uSpeed*0.1*uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0,1.0,0.0), vec3(0.5,0.20,0.25)) * uColor2;
-      col *= uBrightness;
-      float a = clamp(length(col), 0.0, 1.0);
-      gl_FragColor = vec4(col, a);
-    }`;
-
-  const geometry = new Triangle(gl);
-  const program = new Program(gl, {
-    vertex: vert, fragment: frag,
-    uniforms: {
-      uTime:{value:0}, uResolution:{value:[1,1,1]},
-      uSpeed:{value:speed}, uScale:{value:scale}, uBrightness:{value:brightness},
-      uColor1:{value:hexVec3(color1)}, uColor2:{value:hexVec3(color2)},
-      uNoiseFreq:{value:noiseFrequency}, uNoiseAmp:{value:noiseAmplitude},
-      uBandHeight:{value:bandHeight}, uBandSpread:{value:bandSpread},
-      uOctaveDecay:{value:octaveDecay}, uLayerOffset:{value:layerOffset},
-      uColorSpeed:{value:colorSpeed},
-      uMouse:{value:new Float32Array([0.5,0.5])},
-      uMouseInfluence:{value:mouseInfluence}, uEnableMouse:{value:enableMouse},
-    },
-  });
-  const mesh = new Mesh(gl, { geometry, program });
-
-  let cur = [0.5, 0.5], tgt = [0.5, 0.5];
-  function onMove(e){
-    const r = gl.canvas.getBoundingClientRect();
-    tgt = [(e.clientX-r.left)/r.width, 1.0 - (e.clientY-r.top)/r.height];
-  }
-  function onLeave(){ tgt = [0.5, 0.5]; }
-
-  function resize(){
-    renderer.setSize(mount.offsetWidth, mount.offsetHeight);
-    program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width/gl.canvas.height];
-  }
-  resize(); addEventListener('resize', resize);
-  if (enableMouse){ mount.addEventListener('mousemove', onMove); mount.addEventListener('mouseleave', onLeave); }
-
-  let raf = null, running = true;
-  function frame(t){
-    raf = null;
-    program.uniforms.uTime.value = t * 0.001;
-    if (enableMouse){
-      cur[0] += 0.05*(tgt[0]-cur[0]); cur[1] += 0.05*(tgt[1]-cur[1]);
-      program.uniforms.uMouse.value[0] = cur[0]; program.uniforms.uMouse.value[1] = cur[1];
-    }
-    renderer.render({ scene: mesh });
-    if (running && !reduce) raf = requestAnimationFrame(frame);
-  }
-  raf = requestAnimationFrame(frame);
-
-  // pause off-screen to save GPU
-  if ('IntersectionObserver' in window){
-    new IntersectionObserver(es => es.forEach(e => {
-      running = e.isIntersecting;
-      if (running && !raf && !reduce) raf = requestAnimationFrame(frame);
-    }), { threshold: 0 }).observe(mount);
-  }
-
-  return () => {
-    running = false;
-    if (raf) cancelAnimationFrame(raf);
-    removeEventListener('resize', resize);
-    mount.removeEventListener('mousemove', onMove);
-    mount.removeEventListener('mouseleave', onLeave);
-    try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch(_){}
-    if (gl.canvas.parentNode) gl.canvas.parentNode.removeChild(gl.canvas);
-  };
-}
-
-// ============================================================
 // SideRays — vanilla port of the React Bits component (ogl-based)
 // Spotlights the shelf with animated god-rays from a chosen corner.
 // ============================================================
@@ -1507,148 +1453,50 @@ function initSideRays(mount, {
   };
 }
 
+
 // ============================================================
-// Book of the Month — the shelf scene
-//   • title centered above
-//   • author / book / review link in upper-left corner of the frame
-//   • polaroid (paperclip-pinned) on the left of the shelf
-//   • framed book in the center
-//   • marked-up quote page (with bookmarks) on the right
-//   • whole thing sits on a white shelf, spotlit by SideRays,
-//     over a soft aurora background
+// Book of the Month — mounts the fancy scene into #bookOfMonth.
+// The scene itself is built inside bookCard() when badgeText is
+// "Book of the Month", so this is the whole call site.
 // ============================================================
 const botmEl = $('#bookOfMonth');
-const _botm = window._siteData?.bookOfMonth;
+const _botm  = window._siteData?.bookOfMonth;
+
 if (botmEl && _botm?.title) {
-  botmEl.style.display = '';
-  botmEl.classList.add('band--botm');
+  const section = $('#bookOfMonth-section');
+  if (section) section.style.display = '';
 
-  const hlColor = _botm.highlightColor || '';
-  const hlStyleAttr = hlColor ? `style="--botm-hl:${hlColor}"` : '';
-  const quotes = (_botm.quotes || []).slice(0, 3);
-  const qHTML = quotes.map(q =>
-    `<p class="botm-note__line"><span class="botm-note__hl" ${hlStyleAttr}>${escapeHTML(q)}</span></p>`
-  ).join('');
+  // Reveal the section and mount a single fancy card into the rail.
+  botmEl.innerHTML = '';
+  botmEl.appendChild(bookCard(_botm, 'Book of the Month'));
 
-  const bookmarksHTML = ['#f9d2e0', '#bcd3f7', '#f3d6b0']
-    .map((c,i) => `<span class="botm-note__mark" style="--mk:${c}; --i:${i}"></span>`)
-    .join('');
+  // Inject the rays overlay at the section level.
+  if (section && !section.querySelector('.botm-rays')) {
+    const rays = el('div', 'botm-rays'); rays.id = 'botmRays';
+    rays.setAttribute('aria-hidden', 'true');
+    section.appendChild(rays);
+  }
 
-  const sparklesHTML = Array.from({length: 10}, (_,i) =>
-    `<span class="botm-spark" style="--i:${i}"></span>`
-  ).join('');
-
-  // decorative paperclip (SVG) — silver, sits at the polaroid corner
-  const clipSVG = `
-    <svg class="botm-polaroid__clip" viewBox="0 0 44 60" aria-hidden="true">
-      <defs>
-        <linearGradient id="clipG" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="#e8ecf3"/>
-          <stop offset=".5" stop-color="#b6bfd0"/>
-          <stop offset="1" stop-color="#8b98ad"/>
-        </linearGradient>
-      </defs>
-      <path d="M14 4 Q22 4 22 12 L22 44 Q22 52 30 52 Q38 52 38 44 L38 16"
-            fill="none" stroke="url(#clipG)" stroke-width="3.2" stroke-linecap="round"/>
-      <path d="M14 4 Q6 4 6 12 L6 46 Q6 56 16 56"
-            fill="none" stroke="url(#clipG)" stroke-width="3.2" stroke-linecap="round"/>
-      <circle cx="14" cy="8" r="2.4" fill="#cdd6e3"/>
-    </svg>`;
-
-  const bookHTML = _botm.cover
-    ? `<img src="${_botm.cover}" alt="${escapeHTML(_botm.title)}" />`
-    : `<div class="botm-book__gen" style="background:${_botm.color||'#12224f'}"><span>${escapeHTML(_botm.title)}</span></div>`;
-
-  const photoHTML = _botm.photo
-    ? `<img src="${_botm.photo}" alt="${escapeHTML(_botm.title)} — photo" />`
-    : `<div class="botm-polaroid__placeholder">
-         <span>add a photo<br/>in the admin panel</span>
-       </div>`;
-
-  botmEl.innerHTML = `
-    <div class="wrap">
-      <div class="botm-card" id="botmCard">
-        <div class="botm-bg" id="botmAurora" aria-hidden="true"></div>
-
-        <h2 class="botm-title">book of the month</h2>
-
-        <div class="botm-meta">
-          <div class="botm-meta__author">${escapeHTML(_botm.author || 'author name')}</div>
-          <div class="botm-meta__title">${escapeHTML(_botm.title)}</div>
-          ${_botm.link
-            ? `<a class="botm-meta__link" href="${_botm.link}" target="_blank" rel="noopener">my review link \u2192</a>`
-            : `<span class="botm-meta__link botm-meta__link--muted">my review link</span>`}
-        </div>
-
-        <div class="botm-scene">
-          <div class="botm-sparkles" aria-hidden="true">${sparklesHTML}</div>
-
-          <div class="botm-shelf" aria-hidden="true">
-            <div class="botm-shelf__top"></div>
-            <div class="botm-shelf__front"></div>
-          </div>
-
-          <div class="botm-note" style="--tilt:4deg">
-            <div class="botm-note__eyebrow">Quotes I keep re-reading</div>
-            ${qHTML || '<p class="botm-note__line" style="opacity:.5">Add quotes in the admin panel.</p>'}
-            <p class="botm-note__hand">yes I&rsquo;ve read it &mdash;<br/>no I&rsquo;m not over it</p>
-            <div class="botm-note__page">ii</div>
-            <div class="botm-note__marks" aria-hidden="true">${bookmarksHTML}</div>
-          </div>
-
-          <div class="botm-polaroid" style="--tilt:-7deg">
-            ${clipSVG}
-            <div class="botm-polaroid__inner">
-              ${photoHTML}
-              <div class="botm-polaroid__caption">${escapeHTML(_botm.title)}</div>
-            </div>
-          </div>
-
-          <div class="botm-book" id="botmBook">
-            <div class="botm-book__frame">
-              <div class="botm-book__inner">${bookHTML}</div>
-              <div class="botm-book__base" aria-hidden="true"></div>
-            </div>
-            ${_botm.link ? `<a class="botm-book__link" href="${_botm.link}" target="_blank" rel="noopener" aria-label="View on Goodreads">Goodreads \u2197</a>` : ''}
-          </div>
-        </div>
-
-        <div class="botm-rays" id="botmRays" aria-hidden="true"></div>
-      </div>
-    </div>`;
-
-  // Kick off the shader effects + highlight sweep once the section is on screen.
-  // We defer the WebGL init until the user actually scrolls near it (perf).
-  const auroraMount = $('#botmAurora');
+  // Kick off rays + the highlight sweep once the section is on screen.
   const raysMount   = $('#botmRays');
-  const card        = $('#botmCard');
-  let disposeAurora = null, disposeRays = null;
+  const scene       = botmEl.querySelector('.botm-scene');
+  let disposeRays = null;
 
   const io = new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) {
-      // Aurora — sized for the narrow top band behind the h2, so
-      // scale down and lift the band so the glow sits behind the title.
-      if (!disposeAurora) disposeAurora = initSoftAurora(auroraMount, {
-        color1: '#eaf2ff', color2: '#5f8fe6',
-        brightness: 1.0, speed: 0.45,
-        scale: 1.2, bandHeight: 0.35, bandSpread: 1.25,
-        enableMouse: true, mouseInfluence: 0.18,
-      });
-      // Rays — now sit ON TOP via z-index, so keep opacity moderate so
-      // the shafts read as light instead of blocking the scene beneath.
-      if (!disposeRays) disposeRays = initSideRays(raysMount, {
+    if (!e.isIntersecting) return;
+    if (raysMount && !disposeRays) {
+      disposeRays = initSideRays(raysMount, {
         origin: 'top-right', speed: 1.8,
         rayColor1: '#fff0d1', rayColor2: '#bcd3f7',
         intensity: 1.2, spread: 1.6, tilt: -8,
-        saturation: 1.2, blend: 0.55, falloff: 1.8, opacity: 0.65,
+        saturation: 1.2, blend: 0.55, falloff: 1.8, opacity: 0.6,
       });
-      if (card) card.classList.add('in');
-      io.disconnect();
     }
+    if (scene) scene.classList.add('in');
+    io.disconnect();
   }, { threshold: 0.15 });
-  io.observe(botmEl);
+  io.observe(section || botmEl);
 }
-
 renderFolders();
 renderStagram();
 renderTeams();
