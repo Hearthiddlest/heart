@@ -1,0 +1,312 @@
+{
+  "fav": [
+    {
+      "t": "Stolen Touches",
+      "a": "Neva Altaj",
+      "tag": "Mafia",
+      "img": "fav-books/04.jpg"
+    },
+    {
+      "t": "Beautiful Beast",
+      "a": "Neva Altaj",
+      "tag": "Mafia",
+      "img": "fav-books/01.jpg"
+    },
+    {
+      "t": "Broken Whispers",
+      "a": "Neva Altaj",
+      "tag": "Mafia",
+      "img": "fav-books/02.jpg"
+    },
+    {
+      "t": "Precious Hazard",
+      "a": "Neva Altaj",
+      "tag": "Mafia",
+      "img": "fav-books/03.jpg"
+    },
+    {
+      "t": "Enzo",
+      "a": "Eva Winners",
+      "tag": "Mafia",
+      "img": "fav-books/05.jpg"
+    },
+    {
+      "t": "The Maddest Obsession",
+      "a": "Danielle Lori",
+      "tag": "Mafia",
+      "img": "fav-books/06.jpg"
+    },
+    {
+      "t": "The Reaper",
+      "a": "RuNyx",
+      "tag": "Dark",
+      "img": "fav-books/07.jpg"
+    },
+    {
+      "t": "Tracing Scars",
+      "a": "Brandy Hynes",
+      "tag": "Dark",
+      "img": "fav-books/08.jpg"
+    },
+    {
+      "t": "Lights Out",
+      "a": "Navessa Allen",
+      "tag": "Stalker",
+      "img": "fav-books/09.jpg"
+    },
+    {
+      "t": "Satan's Affair",
+      "a": "H.D. Carlton",
+      "tag": "Dark horror",
+      "img": "fav-books/10.jpg"
+    },
+    {
+      "t": "Mindf*ck",
+      "a": "S.T. Abby",
+      "tag": "Dark",
+      "img": "fav-books/11.jpg"
+    },
+    {
+      "t": "Ignite Me",
+      "a": "Tahereh Mafi",
+      "tag": "Dystopian",
+      "img": "fav-books/12.jpg"
+    }
+  ],
+  "excited": [
+    {
+      "t": "Hands Off His Goalie",
+      "a": "Lore Laney",
+      "d": "August 11, 2026",
+      "img": "excited-for/02.jpg"
+    },
+    {
+      "t": "Lovely Venom",
+      "a": "A. Zavarelli",
+      "d": "August 18, 2026",
+      "img": "excited-for/04.jpg"
+    },
+    {
+      "t": "Stealing Blinds",
+      "a": "Brandy Hynes",
+      "d": "September 25, 2026",
+      "img": "excited-for/05.jpg"
+    },
+    {
+      "t": "Sing for Us",
+      "a": "A.H. Monroe",
+      "d": "October 2026",
+      "img": "excited-for/03.jpg"
+    },
+    {
+      "t": "Vicious King",
+      "a": "Natalie Kane",
+      "d": "October 22, 2026",
+      "img": "excited-for/06.jpg"
+    },
+    {
+      "t": "Champagne Problems",
+      "a": "Hannah Grace",
+      "d": "February 16, 2027",
+      "img": "excited-for/01.jpg"
+    }
+  ],
+  "recs": [
+    {
+      "t": "Perfectly Imperfect",
+      "a": "Neva Altaj",
+      "c1": "#ddbe92",
+      "c2": "#000000",
+      "h": 1,
+      "link": "https://www.goodreads.com/series/343844-perfectly-imperfect",
+      "familyTree": ""
+    },
+    {
+      "t": "Oaths & Betrayal",
+      "a": "Samantha Jayne",
+      "c1": "#490d20",
+      "c2": "#f8afd2",
+      "h": 0.82,
+      "link": "https://www.goodreads.com/book/show/236082771-lorenzo-s-claim?ref=nav_sb_ss_1_20",
+      "familyTree": ""
+    },
+    {
+      "t": "The Fallen",
+      "a": "Gabrielle Sands",
+      "c1": "#6b345a",
+      "c2": "#645b76",
+      "h": 0.94,
+      "link": "https://www.goodreads.com/book/show/61674305-when-she-unravels?ref=nav_sb_ss_1_17",
+      "familyTree": ""
+    },
+    {
+      "t": "Sinners Anonymous",
+      "a": "Somme Sketcher",
+      "c1": "#292d46",
+      "c2": "#90171b",
+      "h": 0.7,
+      "link": "https://www.goodreads.com/book/show/59818980-sinners-anonymous?ref=nav_sb_ss_1_14",
+      "familyTree": ""
+    },
+    {
+      "t": "Kingdom Fall & Empire of Kings",
+      "a": "A. Zavarelli",
+      "c1": "#fdc33d",
+      "c2": "#4f4f4f",
+      "h": 1,
+      "link": "https://www.goodreads.com/book/show/58572211-kingdom-fall?ref=nav_sb_ss_4_15",
+      "familyTree": ""
+    },
+    {
+      "t": "Enzo",
+      "a": "Eva Winners",
+      "c1": "#e8e8e8",
+      "c2": "#9e5c77",
+      "h": 0.86,
+      "link": "https://www.goodreads.com/book/show/240761529-enzo",
+      "familyTree": "https://canva.link/4x06498l03yhvfb"
+    }
+  ],
+  "bookOfMonth": {
+    "title": "Thorns of Silence",
+    "author": "Eva Winners",
+    "cover": "https://res.cloudinary.com/txejsma8/image/upload/f_auto,q_auto/v1785746664/hearthiddlest/thtanx82kulwyqlwtqqy.jpg",
+    "photo": "",
+    "back": "",
+    "color": "#12224f",
+    "highlightColor": "#ff5c5c",
+    "link": "https://www.goodreads.com/book/show/161366713-thorns-of-silence",
+    "quotes": [
+      "Phoenix Romero. Nix. The bane of my existence. The girl who had become the center of my world.",
+      "I'll crack the skull and cut off the hands of anyone who tries to touch you."
+    ]
+  },
+  "genres": [
+    {
+      "name": "Mafia",
+      "color": "#12224f",
+      "images": [
+        "genres/mafia/01.jpg",
+        "genres/mafia/02.jpg",
+        "genres/mafia/03.jpg",
+        "genres/mafia/04.jpg",
+        "genres/mafia/05.jpg",
+        "genres/mafia/06.jpg",
+        "genres/mafia/07.jpg",
+        "genres/mafia/08.jpg",
+        "genres/mafia/09.jpg",
+        "genres/mafia/10.jpg",
+        "genres/mafia/11.jpg",
+        "genres/mafia/12.jpg",
+        "genres/mafia/13.jpg",
+        "genres/mafia/14.jpg",
+        "genres/mafia/15.jpg",
+        "genres/mafia/16.jpg",
+        "genres/mafia/17.jpg",
+        "genres/mafia/18.jpg",
+        "genres/mafia/19.jpg",
+        "genres/mafia/20.jpg"
+      ]
+    },
+    {
+      "name": "Dark Romance",
+      "color": "#14151c",
+      "images": [
+        "genres/dark-romance/01.jpg",
+        "genres/dark-romance/02.jpg",
+        "genres/dark-romance/03.jpg",
+        "genres/dark-romance/04.jpg",
+        "genres/dark-romance/05.jpg",
+        "genres/dark-romance/06.jpg",
+        "genres/dark-romance/07.jpg",
+        "genres/dark-romance/08.jpg"
+      ]
+    },
+    {
+      "name": "Contemporary",
+      "color": "#2e5ce0",
+      "images": [
+        "genres/contemporary/01.jpg",
+        "genres/contemporary/02.jpg",
+        "genres/contemporary/03.jpg",
+        "genres/contemporary/04.jpg"
+      ]
+    },
+    {
+      "name": "Sports",
+      "color": "#97a6bd",
+      "images": [
+        "genres/sports/01.jpg"
+      ]
+    }
+  ],
+  "teams": [
+    "Brandy Hynes",
+    "Kay Cove",
+    "Samantha Jayne",
+    "Neva Altaj",
+    "Gabriel Sands",
+    "A. Zavarelli",
+    "Monica Kayne",
+    "Ari Wright"
+  ],
+  "stagram": [
+    {
+      "name": "@readingwithsel_",
+      "img": "images/bookstagrammers/01.jpg"
+    },
+    {
+      "name": "@milicasbookshelf",
+      "img": "images/bookstagrammers/02.jpg"
+    },
+    {
+      "name": "@lilyyascorner",
+      "img": "images/bookstagrammers/03.jpg"
+    },
+    {
+      "name": "@ajlaslibrary",
+      "img": "images/bookstagrammers/04.jpg"
+    },
+    {
+      "name": "@pearl.inventory",
+      "img": "images/bookstagrammers/05.jpg"
+    },
+    {
+      "name": "@writer.zahraar",
+      "img": "images/bookstagrammers/06.jpg"
+    }
+  ],
+  "highlights": [
+    {
+      "book": "Stolen Touches",
+      "author": "Neva Altaj",
+      "color": "pink",
+      "text": "\"Are you telling me you're jealous?\"\n[[\"I'm not jealous.\"]] I take a sip of coffee. [[\"I just have an uncontrollable urge to kill any man who even looks at my wife.\"]]\nMy mother watches me for a few seconds, then places her hands on the table and leans forward.\n\"I truly hope this is a passing infatuation,\" she says. \"God help her, if you're truly fixated.\"\n\"That sounds ominous.\""
+    },
+    {
+      "book": "Ignite Me",
+      "author": "Tahereh Mafi",
+      "color": "orange",
+      "text": "In a world where there is so much to grieve and so little good to take?\n((I grieve [[nothing]]. I take [[everything]]))"
+    },
+    {
+      "book": "Precious Hazard",
+      "author": "Neva Altaj",
+      "color": "blue",
+      "text": "A crooked grin spreads across his face. ((I'd tread icy waters or [[walk through the fires of hell]] for you, [[pink|wildcat.]]))\nLocking his fingers around mine, he pulls me to him and steps under the cascading stream."
+    },
+    {
+      "book": "Savage King",
+      "author": "Natalie Kane",
+      "color": "purple",
+      "text": "\"Your guys don't make eye contact,\" I say after we've walked away.\n\"It's out of respect. If they did, ((I'd have to remove the organs from their bodies.\"))\nI pull up short and scowl up at him. \"That's a bit extreme.\"\n[[\"You're mine. Because you're mine, that makes you a queen, Violet. And they'll treat you that way, or there will be consequences.\"]]\n((You're a queen.))\nWell, okay then."
+    },
+    {
+      "book": "Tracing Scars",
+      "author": "Brandy Hynes",
+      "color": "purple",
+      "text": "When he lowers himself into the chair beside my desk, his eyes grow so sharp and heavy that they slice right into my lungs. \"You won't be doing the Noires—or more specifically, Rena—any favors if you lose yourself. If you spin out.\"\nI'm certain all the Noires would agree that losing myself in order to find Rena is a sacrifice worth making. [[I'd happily sell my soul to ensure hers was safe.]]"
+    }
+  ],
+  "highlightRotateMs": 9000
+}

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog — Hearthiddlest</title>
+<meta name="description" content="My reading journal — every book I couldn't shut up about, with ratings, reactions, and the lines that wrecked me. From @hearthiddlest." />
+
+<!-- favicon -->
+<link rel="icon" href="favicon.ico?v=5" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=5" />
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=5" />
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png?v=5" />
+<link rel="apple-touch-icon" href="images/favicon-180.png?v=5" />
+
+<!-- fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=ranade@300,400,500,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a class="nav__brand" href="index.html">
+    <img src="images/avatar.png" alt="Hearthiddlest logo" />
+    <b>Hearthiddlest</b>
+  </a>
+  <div class="nav__links">
+    <a href="now.html">Current Obsessions</a>
+    <a href="reviews.html" class="is-here">Blog</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="pagehead" id="top">
+  <div class="pagehead__silk" id="silk"></div>
+  <div class="pagehead__veil"></div>
+  <div class="wrap pagehead__inner">
+    <a class="pagehead__back" href="index.html">&larr; Back to the shelf</a>
+    <h1>Books I couldn't <em>shut up</em> about.</h1>
+  </div>
+</header>
+
+<section class="band" id="journal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="chapter-mark"><span class="rn">&#9997;</span><span class="foil">The blog</span><span class="ln"></span></div>
+      <h2>My <em>blog</em>.</h2>
+      <p>Every book that made me text a friend at 2&nbsp;a.m. Straight from my Goodreads reviews, in my own words.</p>
+    </div>
+
+    <div class="challenge reveal" id="challenge">
+      <a class="challenge__link" href="https://www.goodreads.com/user_challenges/64534706" target="_blank" rel="noreferrer">
+        <span class="challenge__year">2026</span>
+        <span class="challenge__label">Reading Challenge</span>
+        <span class="challenge__count"><b id="chDone">0</b> of <b id="chGoal">50</b> books</span>
+        <span class="challenge__bar"><span class="challenge__fill" id="chFill"></span></span>
+        <span class="challenge__pct" id="chPct">0%</span>
+      </a>
+    </div>
+
+    <div class="journal" id="journal-list" aria-live="polite">
+      <!-- entries rendered from reviews.txt -->
+      <div class="journal__loading">Pulling my reviews off the shelf&hellip;</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__mark"><img src="images/avatar.png" alt=""/><b>Hearthiddlest</b></div>
+      </div>
+      <div class="footer__col">
+        <h4>Read</h4>
+        <a href="index.html#favorites">Favorites</a>
+        <a href="index.html#genres">Genres</a>
+        <a href="index.html#recs">Recommendations</a>
+        <a href="index.html#stagram">Bookstagrammers</a>
+      </div>
+      <div class="footer__col">
+        <h4>More</h4>
+        <a href="reviews.html">Blog</a>
+        <a href="now.html">Right now</a>
+        <a href="now.html#excited">Excited for</a>
+        <a href="now.html#teams">ARC teams</a>
+      </div>
+      <div class="footer__col">
+        <h4>Find me</h4>
+        <a href="https://instagram.com/hearthiddlest" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.goodreads.com/user/show/135875347-mary" target="_blank" rel="noreferrer">Goodreads</a>
+        <a href="https://ko-fi.com/heart101" target="_blank" rel="noreferrer">Ko-fi</a>
+        <a href="mailto:hearthiddleston@gmail.com">Email</a>
+      </div>
+      <div class="footer__col">
+        <h4>Also me</h4>
+        <a href="https://instagram.com/mafia.romance.enthusiast" target="_blank" rel="noreferrer">want more mafia? @mafia.romance.enthusiast</a>
+        <a href="https://ko-fi.com/heart101" target="_blank" rel="noreferrer">Grid design</a>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>&copy; Hearthiddlest 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="script.js"></script>
+<!-- Cloudflare Web Analytics -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4dc4076e0e5f4d8db22c53df71cbdfbc"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
