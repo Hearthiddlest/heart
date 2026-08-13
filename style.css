@@ -1502,7 +1502,56 @@ body{ overflow-x:clip; }
 }
 @media(prefers-reduced-motion: reduce){
   .botm-spark{ animation: none; opacity: .55; transform: scale(.7); }
+  .botm-scene{ transition: none; }
 }
+
+/* ============================================================
+   CAROUSEL — prev/next arrows + dots, relevant once BOTM holds
+   more than one book. Swapping crosses-fades the whole
+   .botm-scene out then in; the very first paint on load never
+   gets an is-out class, so a single book still looks exactly
+   as it always has.
+   ============================================================ */
+.botm-scene{
+  opacity: 1;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.botm-scene.is-out{ opacity: 0; transform: translateY(10px) scale(.98); }
+
+.botm-carousel{ position: relative; }
+
+.botm-arrows{
+  position: absolute; inset: 0;
+  z-index: 6;
+  display: flex; align-items: center; justify-content: space-between;
+  pointer-events: none;
+}
+.botm-arrow{
+  pointer-events: auto;
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  color: var(--blue-deep);
+  font-size: 1.4rem; font-weight: 600; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 26px -14px rgba(18,34,79,.4);
+  transition: transform .25s, background .25s, color .25s;
+}
+.botm-arrow:hover{ background:#fff; color:var(--blue); transform:translateY(-2px); }
+.botm-arrow:active{ transform:translateY(0) scale(.94); }
+.botm-arrow:focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
+
+.botm-dots{ display:flex; align-items:center; justify-content:center; gap:.5rem; margin-top:1.6rem; }
+.botm-dot{ width:7px; height:7px; padding:0; border:0; border-radius:50%; cursor:pointer;
+  background:rgba(13,28,58,.18); transition:transform .3s, background .3s; }
+.botm-dot:hover{ background:var(--blue-mid); }
+.botm-dot.is-on{ background:var(--blue); transform:scale(1.35); }
+
+#botmCarousel:focus-visible{ outline:2px solid var(--blue); outline-offset:8px; border-radius:18px; }
 
 /* ============================================================
    Responsive
@@ -1522,6 +1571,11 @@ body{ overflow-x:clip; }
   .botm-note{ transform: rotate(3deg); width: min(340px, 88%); }
   .botm-shelf{ bottom: 20px; }
   .section--botm .section__head h2{ text-align: center; }
+  .botm-arrows{
+    position: static; inset: auto;
+    margin-top: 1.2rem;
+    justify-content: center; gap: 1.2rem;
+  }
 }
 @media(max-width: 520px){
   .section--botm .section__head h2{ font-size: 2rem; }
