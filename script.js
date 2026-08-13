@@ -24,7 +24,7 @@ const pics = (slug, n) =>
   Array.from({ length: n }, (_, i) => `${GENRE_DIR}/${slug}/${String(i + 1).padStart(2, '0')}.jpg`);
 
 let FAV = [], EXCITED = [], RECS = [], GENRES = [], TEAMS = [],
-    STAGRAM = [], HIGHLIGHTS = [], HIGHLIGHT_ROTATE_MS = 9000;
+    STAGRAM = [], HIGHLIGHTS = [], HIGHLIGHT_ROTATE_MS = 9000, BOTM = [];
 
 /* Fallbacks — used only if data.json is missing or broken */
 const _FALLBACK = {
@@ -62,6 +62,11 @@ try {
   STAGRAM    = _d.stagram    || [];
   HIGHLIGHTS = _d.highlights || [];
   HIGHLIGHT_ROTATE_MS = _d.highlightRotateMs ?? 9000;
+  // bookOfMonth is normally an array now (1 book = 1 item), but keep
+  // reading the old single-object shape too in case data.json hasn't
+  // been migrated yet.
+  BOTM = (Array.isArray(_d.bookOfMonth) ? _d.bookOfMonth : _d.bookOfMonth ? [_d.bookOfMonth] : [])
+    .filter(b => b && b.title);
   GENRES     = (_d.genres || []).map(g => ({
     ...g,
     images: g.images || pics(g.slug || g.name.toLowerCase().replace(/\s+/g,'-'), g.count || 0)
@@ -1457,31 +1462,56 @@ function initSideRays(mount, {
 // ============================================================
 // Book of the Month — mounts the fancy scene into #bookOfMonth.
 // The scene itself is built inside bookCard() when badgeText is
-// "Book of the Month", so this is the whole call site.
+// "Book of the Month". With more than one book in BOTM, this also
+// wires up prev/next arrows, dots, swipe, and arrow keys so it
+// behaves as a small carousel — one full scene on screen at a time.
 // ============================================================
 const botmEl = $('#bookOfMonth');
-const _botm  = window._siteData?.bookOfMonth;
 
-if (botmEl && _botm?.title) {
-  const section = $('#bookOfMonth-section');
+if (botmEl && BOTM.length) {
+  const section  = $('#bookOfMonth-section');
+  const carousel = $('#botmCarousel');
+  const arrows   = $('#botmArrows');
+  const prevBtn  = $('#botmPrev');
+  const nextBtn  = $('#botmNext');
+  const dotsWrap = $('#botmDots');
+  const many     = BOTM.length > 1;
+  const reduce   = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let i = 0, busy = false;
+
   if (section) section.style.display = '';
 
-  // Reveal the section and mount a single fancy card into the rail.
-  botmEl.innerHTML = '';
-  botmEl.appendChild(bookCard(_botm, 'Book of the Month'));
-
-  // Inject the rays overlay at the section level.
+  // Inject the rays overlay at the section level — one spotlight
+  // shared by whichever book is currently on show.
   if (section && !section.querySelector('.botm-rays')) {
     const rays = el('div', 'botm-rays'); rays.id = 'botmRays';
     rays.setAttribute('aria-hidden', 'true');
     section.appendChild(rays);
   }
-
-  // Kick off rays + the highlight sweep once the section is on screen.
-  const raysMount   = $('#botmRays');
-  const scene       = botmEl.querySelector('.botm-scene');
+  const raysMount = $('#botmRays');
   let disposeRays = null;
 
+  const paintDots = () => {
+    if (dotsWrap) [...dotsWrap.children].forEach((d, k) => d.classList.toggle('is-on', k === i));
+  };
+
+  // Builds the card for BOTM[i]. With fadeIn, it mounts hidden and
+  // fades up a moment later — used for carousel swaps. The very
+  // first paint skips this so page load looks exactly as before.
+  function build(fadeIn){
+    botmEl.innerHTML = '';
+    const scene = bookCard(BOTM[i], 'Book of the Month');
+    if (fadeIn) scene.classList.add('is-out');
+    botmEl.appendChild(scene);
+    paintDots();
+    if (fadeIn) requestAnimationFrame(() => requestAnimationFrame(() => scene.classList.remove('is-out')));
+    return scene;
+  }
+  const sweepIn = scene => { if (scene) requestAnimationFrame(() => scene.classList.add('in')); };
+
+  let currentScene = build(false);
+
+  // Kick off rays + the first highlight sweep once the section is on screen.
   const io = new IntersectionObserver(([e]) => {
     if (!e.isIntersecting) return;
     if (raysMount && !disposeRays) {
@@ -1492,10 +1522,60 @@ if (botmEl && _botm?.title) {
         saturation: 1.2, blend: 0.55, falloff: 1.8, opacity: 0.6,
       });
     }
-    if (scene) scene.classList.add('in');
+    sweepIn(currentScene);
     io.disconnect();
   }, { threshold: 0.15 });
   io.observe(section || botmEl);
+
+  function go(n){
+    const nextI = ((n % BOTM.length) + BOTM.length) % BOTM.length;
+    if (nextI === i || busy) return;
+    i = nextI;
+    if (reduce) { currentScene = build(false); sweepIn(currentScene); return; }
+    busy = true;
+    currentScene?.classList.add('is-out');
+    setTimeout(() => { currentScene = build(true); sweepIn(currentScene); busy = false; }, 300);
+  }
+
+  // Carousel chrome (arrows, dots, swipe, arrow keys) only matters
+  // once there's more than one book to move between.
+  if (many) {
+    if (dotsWrap) {
+      BOTM.forEach((_, k) => {
+        const d = el('button', 'botm-dot');
+        d.type = 'button';
+        d.setAttribute('aria-label', `Book of the month ${k + 1} of ${BOTM.length}`);
+        d.addEventListener('click', () => go(k));
+        dotsWrap.appendChild(d);
+      });
+      paintDots();
+      dotsWrap.style.display = '';
+    }
+    if (arrows) arrows.style.display = '';
+    prevBtn?.addEventListener('click', () => go(i - 1));
+    nextBtn?.addEventListener('click', () => go(i + 1));
+
+    // swipe left/right on the scene itself
+    let tx = null, ty = null;
+    botmEl.addEventListener('touchstart', e => {
+      tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+    }, { passive: true });
+    botmEl.addEventListener('touchend', e => {
+      if (tx === null) return;
+      const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? i + 1 : i - 1);
+      tx = ty = null;
+    });
+
+    // arrow keys once the carousel has focus, like flipping the about-me book
+    if (carousel) {
+      carousel.setAttribute('tabindex', '0');
+      carousel.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1); }
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); go(i - 1); }
+      });
+    }
+  }
 }
 renderFolders();
 renderStagram();
